@@ -10,7 +10,7 @@ navbar:
           href: catdes.html
         - text: "By Textual Data"
           href: textual.html
-        - text: "By Frequencies"
+        - text: "By Columns/Rows (Contingency Table)"
           href: descfreq.html
     - text: "Multivariate Analysis"
       menu: 
