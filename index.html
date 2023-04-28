@@ -13,8 +13,8 @@
 
 <title>MEDA: Multivariate Exploratory Data Analysis with jamovi and FactoMineR</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -60,6 +60,7 @@ if (window.hljs) {
 
 
 
+
 <style type = "text/css">
 .main-container {
   max-width: 940px;
@@ -80,6 +81,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -137,11 +141,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -170,8 +178,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -179,16 +187,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -232,7 +233,7 @@ $(document).ready(function () {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -245,7 +246,7 @@ $(document).ready(function () {
   <a href="index.html">Home</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Automatic Univariate Description
      
     <span class="caret"></span>
@@ -263,7 +264,7 @@ $(document).ready(function () {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Multivariate Analysis
      
     <span class="caret"></span>
@@ -292,20 +293,33 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">MEDA: Multivariate Exploratory Data Analysis with jamovi and FactoMineR</h1>
+<h1 class="title toc-ignore">MEDA: Multivariate Exploratory Data
+Analysis with jamovi and FactoMineR</h1>
 
 </div>
 
 
-<p>MEDA is jamovi module for multivariate exploratory data analysis methods such as Principal Components Analysis, Correspondence Analysis, Multiple Correspondence Analysis. Alongside those main methods, three other methods have been added to the modules: the description of a categorical or a continuous variable by categorical and continuous variables, the description of a categorical variable with a textual variable and finally, the description of a contingency table.</p>
+<p>MEDA is jamovi module for multivariate exploratory data analysis
+methods such as Principal Components Analysis, Correspondence Analysis,
+Multiple Correspondence Analysis. Alongside those main methods, three
+other methods have been added to the modules: the description of a
+categorical or a continuous variable by categorical and continuous
+variables, the description of a categorical variable with a textual
+variable and finally, the description of a contingency table. These
+three last functions are really useful.</p>
 <p>This tutorial was mostly written by Maxime Saland.</p>
 <!-- For more information about simple R Markdown websites, please read the documentation at https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html. -->
 <!-- Please also note that simple R Markdown sites are _not_ based on **blogdown**. They are probably good for websites with only a few Rmd documents. For larger-scale and more sophisticated websites (such as blogs), you may want to use **blogdown** instead: https://github.com/rstudio/blogdown. -->
-<p><img src="images/MenuMEDA.png" width="80%" style="display: block; margin: auto auto auto 0;" /> <br><br /></p>
-<p>Links to the user guide for each of those methods are available below. <br><br /> For the <strong>Automatic Univariate Description</strong> methods:</p>
+<p><img src="images/MenuMEDA.png" width="80%" style="display: block; margin: auto auto auto 0;" />
+<br><br /></p>
+<p>Links to the user guide for each of those methods are available
+below. <br><br /> For the <strong>Automatic Univariate
+Description</strong> methods:</p>
 <ul>
-<li><a href="catdes.html">Description of a categorical or continuous variable</a></li>
-<li><a href="descfreq.html">Description of a categorical variable by a textual variable</a></li>
+<li><a href="catdes.html">Description of a categorical or continuous
+variable</a></li>
+<li><a href="descfreq.html">Description of a categorical variable by a
+textual variable</a></li>
 <li><a href="textual.html">Description of a contingency table</a></li>
 </ul>
 <p>For the <strong>Multivariate Analysis</strong> methods:</p>
