@@ -1,5 +1,5 @@
 ---
-title: 'MEDA: Multivariate Exploratory Data Analysis with jamovi and FactoMineR'
+title: 'MEDA: Multivariate Exploratory Data Analysis with jamovi'
 ---
 
 MEDA is jamovi module for multivariate exploratory data analysis methods such as Principal Components Analysis, Correspondence Analysis, Multiple Correspondence Analysis. Alongside those main methods, three other methods have been added to the modules: the description of a categorical or a continuous variable by categorical and continuous variables, the description of a categorical variable with a textual variable and finally, the description of a contingency table. These three last functions are really useful.
